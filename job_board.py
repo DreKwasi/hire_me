@@ -83,15 +83,19 @@ if search_button:
 
 
 if next_page_button and len(items) < 20 and query["nextPage"]:
-    items, counter = run_search(
-        roles,
-        locations,
-        exclude_locations,
-        date=dt.datetime.strftime(date, "%Y-%m-%d"),
-        query=query,
-        next_page=True,
-        start_num=query["nextPage"][0]["startIndex"] - 1,
-    )
+    try:
+        items, counter = run_search(
+            roles,
+            locations,
+            exclude_locations,
+            date=dt.datetime.strftime(date, "%Y-%m-%d"),
+            query=query,
+            next_page=True,
+            start_num=query["nextPage"][0]["startIndex"] - 1,
+        )
+    except Exception:
+        st.info("Only One Page Available for the Role. Try Other Keywords")
+        st.stop()
     query = call.load_query()
     placeholder.metric("Number of Searches", value=counter["search_count"])
     startIndex = query["request"][0]["startIndex"]
