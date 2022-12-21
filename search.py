@@ -2,7 +2,7 @@ from googleapiclient.discovery import build
 import streamlit as st
 from functools import reduce
 import json
-import call_func as call
+import helper.call_func as call
 
 
 cred = st.secrets["credentials"]
@@ -49,7 +49,7 @@ def run_search(roles, locations, exclude_locations, date: str, next_page=False, 
             q=search_term, cx=cred["search_engine_id"],
         ).execute()
         try:
-            with open("res.json", "w") as f:
+            with open("assets/res.json", "w") as f:
                 json.dump(results, f)
 
             counter["search_count"] += 1
