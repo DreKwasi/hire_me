@@ -14,7 +14,10 @@ count = 10
 counter = call.load_counter()
 items = call.load_items()
 query = call.load_query()
+last_page = len(items) // 10
 
+if "page_number" not in st.session_state:
+    st.session_state.page_number = 0
 
 st.set_page_config(
     page_title="JobBoards",
@@ -24,13 +27,19 @@ st.set_page_config(
 )
 
 st.header("Job Boards")
+col1, col2, col3 = st.columns([1, 1, 1])
 
-placeholder = st.empty()
-placeholder.metric("Number of Searches", value=counter["search_count"])
+
+with col1:
+    placeholder = st.empty()
+    placeholder.metric("Number of Queries", value=counter["search_count"])
+with col2:
+    entry_holder = st.empty()
+    entry_holder.metric("Number of Job Posts", value=len(items))
+col3.metric("Page Number", value=st.session_state.page_number + 1)
+
 
 st.sidebar.header("Filter Search Results")
-
-
 roles = st.sidebar.multiselect(
     "Select Role/Keyword",
     options=[
@@ -39,8 +48,12 @@ roles = st.sidebar.multiselect(
         "UI/UX Designer",
         "Data Scientist",
         "Business Intelligence Analyst",
+        "Backend Developer",
+        "Frontend Developer",
+        "Inventory Analyst",
+        "Billing Analyst",
     ],
-    default="Data Scientist",
+    default="Data Analyst",
 )
 
 text = st.sidebar.text_input(
@@ -52,7 +65,7 @@ roles = [x.strip() for x in roles]
 
 locations = st.sidebar.multiselect(
     "Search Location",
-    options=["remote global", "remote worldwide", "hire from anywhere"],
+    options=["remote global", "remote worldwide", "hire from anywhere", "Accra"],
     default="remote global",
 )
 date = st.sidebar.slider(
@@ -65,24 +78,22 @@ exclude_locations = st.sidebar.multiselect(
     options=["Europe", "LATAM", "Americas", "APAC"],
     default=None,
 )
-# st.date_input("Filter Start Date")
 
 
-search_button = st.sidebar.button("Start Search", type="secondary")
+search, generate = st.sidebar.columns([1, 1])
+st.sidebar.markdown("###")
+prev, next = st.sidebar.columns([1, 1])
 
-next_page_button = st.sidebar.button("Next Page", type="secondary")
-prev_page_button = st.sidebar.button("Previous Page", type="secondary")
 
-if search_button:
+if search.button("Start Search", type="primary"):
     items, counter, query = run_search(
         roles, locations, exclude_locations, date=dt.datetime.strftime(date, "%Y-%m-%d")
     )
-
     placeholder.metric("Number of Searches", value=counter["search_count"])
-    total_page_count = 1
+    entry_holder.metric("Number of Job Posts", value=len(items))
+    st.session_state.page_number = 0
 
-
-if next_page_button and len(items) < 20 and query["nextPage"]:
+if generate.button("Get More Job Posts", type="secondary"):
     try:
         items, counter = run_search(
             roles,
@@ -94,41 +105,52 @@ if next_page_button and len(items) < 20 and query["nextPage"]:
             start_num=query["nextPage"][0]["startIndex"] - 1,
         )
     except Exception:
-        st.info("Only One Page Available for the Role. Try Other Keywords")
-        st.stop()
-    query = call.load_query()
+        info = st.info("No More Entries. Try Other Keywords")
     placeholder.metric("Number of Searches", value=counter["search_count"])
-    startIndex = query["request"][0]["startIndex"]
+    entry_holder.metric("Number of Job Posts", value=len(items))
 
 
-if prev_page_button and query["previousPage"]:
-    items = call.load_items()
-    startIndex = query["request"][0]["startIndex"] - 10
-    print(startIndex)
+if next.button("Next Page", type="secondary"):
+    if st.session_state.page_number + 1 > last_page:
+        st.session_state.page_number = 0
+    else:
+        st.session_state.page_number += 1
 
+if prev.button("Previous Page", type="secondary"):
+    if st.session_state.page_number - 1 < 0:
+        st.session_state.page_number = last_page
+    else:
+        st.session_state.page_number -= 1
+
+startIndex = st.session_state.page_number * 10
+endIndex = (
+    (1 + st.session_state.page_number) * 10 if st.session_state.page_number != 0 else 10
+)
 
 with st.spinner("Loading Jobs..."):
-    endIndex = count + startIndex
-    print(startIndex, endIndex)
 
     display_res = items[startIndex:endIndex]
+    if len(display_res) > 0:
+        for index, result in enumerate(display_res, start=startIndex):
+            link_address = result["link"]
+            link_address.replace("()", "")
 
-    for index, result in enumerate(display_res, start=startIndex):
-        link_address = result["link"]
-        link_address.replace("()", "")
+            snippet = result["snippet"]
+            try:
+                title = result["metatags"]["twitter:title"]
+            except KeyError:
+                title = result["title"]
 
-        snippet = result["snippet"]
-        try:
-            title = result["metatags"]["twitter:title"]
-        except KeyError:
-            title = result["title"]
-
-        st.write(f"#### {index+1}. {title}")
-        with st.expander("View Post"):
-            st.markdown(
-                f"""
-                        {snippet} \n
-                        <a href="{link_address}">Apply Here</a>
-                        """,
-                unsafe_allow_html=True,
-            )
+            st.write(f"#### {index+1}. {title}")
+            with st.expander("View Post"):
+                st.markdown(
+                    f"""
+                            {snippet} \n
+                            <a href="{link_address}">Apply Here</a>
+                            """,
+                    unsafe_allow_html=True,
+                )
+    else:
+        st.info(
+            "No More Job Post. Click 'Get More Job Posts' or 'Include More Keywords'"
+        )
