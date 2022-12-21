@@ -5,7 +5,7 @@ from functools import reduce
 from bs4 import BeautifulSoup
 import requests
 import datetime as dt
-import call_func as call
+import helper.call_func as call
 
 
 startIndex = 0
