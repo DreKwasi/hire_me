@@ -48,13 +48,16 @@ def run_search(roles, locations, exclude_locations, date: str, next_page=False, 
         results = service_call.list(
             q=search_term, cx=cred["search_engine_id"],
         ).execute()
-        
-        with open("res.json", "w") as f:
-            json.dump(results, f)
+        try:
+            with open("res.json", "w") as f:
+                json.dump(results, f)
 
-        counter["search_count"] += 1
-        call.save_counter(counter)
-        call.save_items(results["items"])
-        
-        call.save_query(results["queries"])
-        return results["items"], counter, results["queries"]
+            counter["search_count"] += 1
+            call.save_counter(counter)
+            call.save_items(results["items"])
+            
+            call.save_query(results["queries"])
+            return results["items"], counter, results["queries"]
+        except KeyError:
+            st.info("Include More Keywords (Try Using A Longer Date Range). No Job Posts Found")
+            st.stop()
