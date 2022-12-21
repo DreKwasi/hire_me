@@ -1,9 +1,5 @@
 import streamlit as st
 from search import run_search
-import json
-from functools import reduce
-from bs4 import BeautifulSoup
-import requests
 import datetime as dt
 import helper.call_func as call
 
@@ -142,7 +138,7 @@ with st.spinner("Loading Jobs..."):
                 title = result["title"]
 
             st.write(f"#### {index+1}. {title}")
-            with st.expander("View Post"):
+            with st.expander("View Job Post"):
                 st.markdown(
                     f"""
                             {snippet} \n
