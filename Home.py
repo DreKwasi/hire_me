@@ -53,7 +53,7 @@ if selected == "Login":
 
 elif selected == "Register":
     try:
-        if authenticator.register_user("Register user", preauthorization=False):
+        if authenticator.register_user("Register user", preauthorization=True):
             previous_users = list(creds["usernames"].keys())
             db.create_user(
                 usernames=creds['usernames'],
