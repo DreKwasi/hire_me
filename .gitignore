@@ -3,3 +3,4 @@ api.json
 job_board_cred.json
 .vscode/
 __pycache__
+/scrape_env
