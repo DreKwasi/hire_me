@@ -1,3 +1,5 @@
 google-api-python-client
 streamlit
 beautifulsoup4
+streamlit_authenticator
+streamlit_option_menu

@@ -4,3 +4,6 @@ job_board_cred.json
 .vscode/
 __pycache__
 /scrape_env
+.env
+test.ipynb
+hash_password.py
