@@ -156,6 +156,8 @@ def view_jobboard():
         """
     ### Made with ❤️ by:
     - [Andrews Asamoah Boateng](https://www.linkedin.com/in/aaboateng/)
+    - [Joel Kojo Abaka Anaman](https://www.linkedin.com/in/joelanaman/)
+    
 
     """
     )
