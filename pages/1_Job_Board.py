@@ -1,6 +1,12 @@
 import streamlit as st
 from helper import job_board_func
 
+st.set_page_config(
+    page_title="JobBoards",
+    page_icon="clipboard",
+    initial_sidebar_state="expanded",
+    layout="wide",
+)
 
 if "authentication_status" in st.session_state or "username" in st.session_state :
 
