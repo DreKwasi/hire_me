@@ -1,7 +1,7 @@
 import streamlit as st
 from . import db
 import datetime as dt
-from search import run_search
+from helper.search import run_search
     
     
 def view_jobboard():
@@ -76,12 +76,16 @@ def view_jobboard():
     prev, next = st.sidebar.columns([1, 1])
 
     if search.button("Start Search", type="primary"):
-        items, counter, query = run_search(
-            roles,
-            locations,
-            exclude_locations,
-            date=dt.datetime.strftime(date, "%Y-%m-%d"),
-        )
+        try:
+            items, counter, query = run_search(
+                roles,
+                locations,
+                exclude_locations,
+                date=dt.datetime.strftime(date, "%Y-%m-%d"),
+            )
+        except TypeError:
+            entry_holder.metric("Number of Job Posts", value=0)
+            st.stop()
         placeholder.metric("Number of Searches", value=counter["search_count"])
         entry_holder.metric("Number of Job Posts", value=len(items))
         st.session_state.page_number = 0
@@ -99,7 +103,6 @@ def view_jobboard():
             )
         except Exception:
             st.info("No More Entries. Try Other Keywords")
-            st.stop()
         placeholder.metric("Number of Searches", value=counter["search_count"])
         entry_holder.metric("Number of Job Posts", value=len(items))
 
