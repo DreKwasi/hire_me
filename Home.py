@@ -10,7 +10,7 @@ st.set_page_config(
     page_title="JobBoards",
     page_icon="clipboard",
     initial_sidebar_state="expanded",
-    layout="wide",
+    layout="centered",
 )
 
 selected = option_menu(menu_title="", options=["Login", "Register"], orientation="horizontal")
@@ -38,12 +38,11 @@ if selected == "Login":
     ) = authenticator.login("Login", "main")
 
     if st.session_state["authentication_status"]:
-        st.sidebar.header(f'Welcome *{st.session_state["name"]}*')
+        st.header(f'Welcome {st.session_state["name"]}')
         
-        with st.sidebar:
-            authenticator.logout("Logout", "main")
         show()
-    
+        authenticator.logout("Logout", "main")
+
     elif st.session_state["authentication_status"] == False:
         st.error("Username/password is incorrect")
     
