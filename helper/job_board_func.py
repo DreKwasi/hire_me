@@ -5,7 +5,6 @@ from helper.search import run_search
     
     
 def view_jobboard():
-    st.write(f'Welcome *{st.session_state["name"]}*')
     startIndex = 0
 
     # counter = call.load_counter()
@@ -51,6 +50,8 @@ def view_jobboard():
     text = st.sidebar.text_input(
         "Add keywords related to the role above (Optional)", help="Optional"
     )
+    
+    st.sidebar.markdown("-----")
 
     roles.extend(text.split(","))
     roles = [x.strip() for x in roles]
@@ -60,20 +61,30 @@ def view_jobboard():
         options=["remote global", "remote worldwide", "hire from anywhere", "Accra"],
         default="remote global",
     )
-    date = st.sidebar.slider(
-        "Filter Start Date",
-        min_value=dt.date.today(),
-        max_value=dt.date(year=2022, month=1, day=1),
-    )
+    
     exclude_locations = st.sidebar.multiselect(
         "Exclude Location",
         options=["Europe", "LATAM", "Americas", "APAC"],
         default=None,
     )
+    
+    
+    st.sidebar.markdown("-----")
+    
+    # date = st.sidebar.slider(
+    #     "Filter Start Date",
+    #     min_value=dt.date.today(),
+    #     max_value=dt.date(year=2022, month=1, day=1),
+    # )
+    date = st.sidebar.date_input("Select Start Date")
+    
+    st.sidebar.markdown("-----")
 
     search, generate = st.sidebar.columns([1, 1])
-    st.sidebar.markdown("###")
+        
     prev, next = st.sidebar.columns([1, 1])
+    
+    st.sidebar.markdown("-----")
 
     if search.button("Start Search", type="primary"):
         try:
@@ -90,7 +101,7 @@ def view_jobboard():
         entry_holder.metric("Number of Job Posts", value=len(items))
         st.session_state.page_number = 0
 
-    if generate.button("Get More Job Posts", type="secondary"):
+    if generate.button("Get More Posts", type="secondary"):
         try:
             items, counter = run_search(
                 roles,
@@ -106,13 +117,13 @@ def view_jobboard():
         placeholder.metric("Number of Searches", value=counter["search_count"])
         entry_holder.metric("Number of Job Posts", value=len(items))
 
-    if next.button("Next Page", type="secondary"):
+    if next.button("Next Page :arrow_forward:", type="secondary"):
         if st.session_state.page_number + 1 > last_page:
             st.session_state.page_number = 0
         else:
             st.session_state.page_number += 1
 
-    if prev.button("Previous Page", type="secondary"):
+    if prev.button(":arrow_backward: Previous Page", type="secondary"):
         if st.session_state.page_number - 1 < 0:
             st.session_state.page_number = last_page
         else:
