@@ -38,10 +38,11 @@ def view_jobboard():
         "Select Role/Keyword",
         options=criteria['roles'],
         default="Data Analyst",
+        help="Multiple Roles can be selected"
     )
 
     text = st.sidebar.text_input(
-        "Add keywords related to the role above (Optional)", help="Optional"
+        "Add keywords related to the role above (Optional)", help="Keywords should be separated by commas"
     )
     
     st.sidebar.markdown("-----")
@@ -53,22 +54,21 @@ def view_jobboard():
         "Search Location",
         options=["remote global", "remote worldwide", "hire from anywhere"],
         default="remote global",
+        help="Multiple locations can be selected"
+        
     )
     
     exclude_locations = st.sidebar.multiselect(
         "Exclude Location",
         options=criteria['exclude_locations'],
         default=None,
+        help="Multiple locations can be selected"
+        
     )
     
     
     st.sidebar.markdown("-----")
-    
-    # date = st.sidebar.slider(
-    #     "Filter Start Date",
-    #     min_value=dt.date.today(),
-    #     max_value=dt.date(year=2022, month=1, day=1),
-    # )
+
     date = st.sidebar.date_input("Select Start Date")
     
     st.sidebar.markdown("-----")
