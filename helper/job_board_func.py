@@ -2,8 +2,12 @@ import streamlit as st
 from . import db
 import datetime as dt
 from helper.search import run_search
-    
-    
+import json
+
+with open("assets/criteria.json", "r") as file:
+    criteria = json.load(file)
+
+
 def view_jobboard():
     startIndex = 0
 
@@ -12,7 +16,6 @@ def view_jobboard():
     # query = call.load_query()
 
     counter, query, items = db.call_user_entries()
-    print(len(items))
     last_page = len(items) // 10
 
     if "page_number" not in st.session_state:
@@ -33,17 +36,7 @@ def view_jobboard():
     st.sidebar.header("Filter Search Results")
     roles = st.sidebar.multiselect(
         "Select Role/Keyword",
-        options=[
-            "Data Analyst",
-            "Product Manager",
-            "UI/UX Designer",
-            "Data Scientist",
-            "Business Intelligence Analyst",
-            "Backend Developer",
-            "Frontend Developer",
-            "Inventory Analyst",
-            "Billing Analyst",
-        ],
+        options=criteria['roles'],
         default="Data Analyst",
     )
 
@@ -58,13 +51,13 @@ def view_jobboard():
 
     locations = st.sidebar.multiselect(
         "Search Location",
-        options=["remote global", "remote worldwide", "hire from anywhere", "Accra"],
+        options=["remote global", "remote worldwide", "hire from anywhere"],
         default="remote global",
     )
     
     exclude_locations = st.sidebar.multiselect(
         "Exclude Location",
-        options=["Europe", "LATAM", "Americas", "APAC"],
+        options=criteria['exclude_locations'],
         default=None,
     )
     
@@ -94,7 +87,8 @@ def view_jobboard():
                 exclude_locations,
                 date=dt.datetime.strftime(date, "%Y-%m-%d"),
             )
-        except TypeError:
+        except Exception:
+            st.info("No More Entries")
             entry_holder.metric("Number of Job Posts", value=0)
             st.stop()
         placeholder.metric("Number of Searches", value=counter["search_count"])
@@ -113,7 +107,7 @@ def view_jobboard():
                 start_num=query["nextPage"][0]["startIndex"] - 1,
             )
         except Exception:
-            st.info("No More Entries. Try Other Keywords")
+            st.info("No More Entries")
         placeholder.metric("Number of Searches", value=counter["search_count"])
         entry_holder.metric("Number of Job Posts", value=len(items))
 
@@ -163,7 +157,9 @@ def view_jobboard():
             st.info(
                 "No More Job Post. Click 'Get More Job Posts' or 'Include More Keywords'"
             )
-            
+    
+    st.sidebar.info("Reduce Search Frequency")
+    
 
     # Made by section - footer in the sidebar
     st.sidebar.markdown(

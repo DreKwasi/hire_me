@@ -84,6 +84,7 @@ def run_search(
             return results["items"].copy(), counter, results["queries"].copy()
         
         except KeyError:
+            counter["search_count"] += 1
             st.info(
                 "Include More Keywords (Try Using A Longer Date Range). No Job Posts Found"
             )
