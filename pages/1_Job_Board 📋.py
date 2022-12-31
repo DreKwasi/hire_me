@@ -33,4 +33,4 @@ else:
     login_btn = st.button("Login")
     if login_btn:
         switch_page("Home")
-    st.warning("Visit Home Screen To Login or Register")
+    st.warning("Visit Home Page To Login or Register")
