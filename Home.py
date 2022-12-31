@@ -13,6 +13,14 @@ st.set_page_config(
     layout="centered",
 )
 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 if "authentication_status" in st.session_state and st.session_state["authentication_status"] == True:
     options = ["Home Page"]
 else:
