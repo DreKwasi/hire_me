@@ -11,17 +11,13 @@ with open("assets/criteria.json", "r") as file:
 def view_jobboard():
     startIndex = 0
 
-    # counter = call.load_counter()
-    # items = call.load_items()
-    # query = call.load_query()
-
     counter, query, items = db.call_user_entries()
     last_page = len(items) // 10
 
     if "page_number" not in st.session_state:
         st.session_state.page_number = 0
 
-    st.header("Job Boards")
+    st.header("Job Boards 📋")
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col1:

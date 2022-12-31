@@ -66,6 +66,6 @@ elif selected == "Register":
 
 
 elif selected == "Home Page":
-    st.header(f'Welcome {st.session_state["name"]}')
+    st.header(f'Welcome {st.session_state["name"]} :grinning:')
     show()
     authenticator.logout("Logout", "main")
