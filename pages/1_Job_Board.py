@@ -1,5 +1,6 @@
 import streamlit as st
 from helper import job_board_func
+from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(
     page_title="JobBoards",
@@ -21,4 +22,7 @@ if "authentication_status" in st.session_state or "username" in st.session_state
 
 
 else:
+    login_btn = st.button("Login")
+    if login_btn:
+        switch_page("Home")
     st.warning("Visit Home Screen To Login or Register")
