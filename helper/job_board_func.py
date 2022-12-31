@@ -20,7 +20,7 @@ def view_jobboard():
     st.header("Job Boards 📋")
     st.markdown(
         """
-        #### For Getting your Career needs sorted for that next Big Opportunity, [Click Here](https://mycareerwheel.com/)
+        #### For Getting your Career needs sorted for that next Big Opportunity, [Visit Career Wheel](https://mycareerwheel.com/)
                 """)
     col1, col2, col3 = st.columns([1, 1, 1])
 
