@@ -1,0 +1,40 @@
+{
+  "roles": [
+    "Data Analyst",
+    "Product Manager",
+    "UI/UX Designer",
+    "Data Scientist",
+    "Business Intelligence Analyst",
+    "Backend Developer",
+    "Frontend Developer",
+    "Inventory Analyst",
+    "Billing Analyst",
+    "Modelling Analyst",
+    "Sales Analyst",
+    "Frontend Developer",
+    "Data Engineer",
+    "Logistisc Analyst",
+    "Pricing Analyst",
+    "Digital Marketer",
+    "Support Analyst",
+    "Analyst, Operational Excellence",
+    "Analyst, Marketing Intelligence",
+    "Machine Learning Engineer",
+    "Database Administrator",
+    "Business Analyst",
+    "Sales Operations Analyst",
+    "AI Analytics Visualization Expert",
+    "Process Intelligence Data Analyst",
+    "Pharmaceutical Data Analyst"
+  ],
+
+  "exclude_locations": [
+    "Europe",
+    "LATAM",
+    "Americas",
+    "APAC",
+    "United States",
+    "United Kingdom",
+    "Africa"
+  ]
+}
