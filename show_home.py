@@ -20,7 +20,7 @@ def show():
         - Under the Sidebar, Select Any of the Roles Under the Filter Search Results
         - Add Keywords if Necessary e.g. 'Python, Health, Supply Chain etc.'
         - Include the Location for the Role i.e 'global, remote global, hire from anywhere'
-        - Select the Start Date of the Search by using the Slider
+        - Select the Start Date of the Search.
         - You can also exclude certain locations from the search by using the Exclude Location Section
         - Once you are comfortable with the options, Click on the Start Search Button.
         - Each search result shows only 10 entries per page, to get more search result Click on the "Get More Job Posts" button
