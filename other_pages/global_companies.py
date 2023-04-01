@@ -21,8 +21,8 @@ st.header("🏢 Global Companies")
 
 col1, col2 = st.sidebar.columns([1, 1])
 with col1:
-    if st.button("Custom Job Search", type="primary"):
-        switch_page("Custom Job Search")
+    if st.button("Custom Google Search", type="primary"):
+        switch_page("Custom Google Search")
 
 with col2:
     # st.markdown("###")
@@ -34,7 +34,7 @@ st.write("")
 
 selected = option_menu(
     "",
-    options=["Hand-Picked Global Companies", "1000+ Companies"],
+    options=["Reviewed Global Companies", "1000+ Companies"],
     orientation="horizontal",
     icons=["cloud-upload", "list-task"],
     styles={
@@ -50,7 +50,7 @@ selected = option_menu(
     },
 )
 
-if selected == "Hand-Picked Global Companies":
+if selected == "Reviewed Global Companies":
     st.session_state.page_number_one = (
         0
         if "page_number_one" not in st.session_state
