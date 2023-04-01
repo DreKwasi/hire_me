@@ -112,7 +112,7 @@ if selected == "Hand-Picked Global Companies":
             col3.markdown(f"Additional Comments: {row['Comments']}")
 
             st.markdown(f"[Visit Website]({row['Link'].strip()})")
-            components.iframe(f"{row['Link']}", width=900, height=500, scrolling=True)
+            components.iframe(f"{row['Link']}", height=500, scrolling=True)
 
 
 elif selected == "1000+ Companies":
@@ -208,7 +208,6 @@ elif selected == "1000+ Companies":
                         st.markdown(f"[Visit {options[0]}]({link})")
                         components.iframe(
                             f"{row[options[0]]}",
-                            width=900,
                             height=500,
                             scrolling=True,
                         )
@@ -223,7 +222,6 @@ elif selected == "1000+ Companies":
 
                         components.iframe(
                             f"{link}",
-                            width=900,
                             height=500,
                             scrolling=True,
                         )
