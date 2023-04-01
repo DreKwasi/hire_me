@@ -7,7 +7,7 @@ def read_data(selected):
     if selected == "1000+ Companies":
         df = pd.read_csv(f"assets/remote_jobs.csv")
         df.fillna("Not Specified", inplace=True)
-    elif selected == "Hand-Picked Global Companies":
+    elif selected == "Reviewed Global Companies":
         df = pd.read_csv("assets/curated_jobs.csv", dtype={"Company": str})
         df["Comments"].fillna("", inplace=True)
         df.fillna("Not Specified", inplace=True)
