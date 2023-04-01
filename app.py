@@ -14,7 +14,8 @@ show_pages(
     [
         Page("app.py", "Home", "🏠"),
         Page("other_pages/global_companies.py", "Global Companies", "🏢"),
-        Page("other_pages/custom_search.py", "Custom Job Search", "🔎"),
+        Page("other_pages/top_boards.py", "Personalized Search", "🎯"),
+        Page("other_pages/custom_search.py", "Custom Google Search", "🔎"),
     ]
 )
 
