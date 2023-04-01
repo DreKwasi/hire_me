@@ -9,6 +9,9 @@ with open("assets/criteria.json", "r") as file:
 
 
 def view_jobboard():
+    st.header("Advanced Google Search 🔎")
+    info_holder = st.empty()
+    
     startIndex = 0
 
     counter, query, items = db.call_user_entries()
@@ -16,12 +19,11 @@ def view_jobboard():
 
     if "page_number" not in st.session_state:
         st.session_state.page_number = 0
-
-    st.header("Job Boards 📋")
-    st.markdown(
+    st.sidebar.markdown(
         """
-        #### For Getting your Career needs sorted for that next Big Opportunity, [Visit Career Wheel](https://mycareerwheel.com/)
-                """)
+        #### *Build Your Career with [Career Wheel](https://mycareerwheel.com/)*
+                """
+    )
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col1:
@@ -34,50 +36,50 @@ def view_jobboard():
     col3.metric("Page Number", value=st.session_state.page_number + 1)
 
     st.sidebar.header("Filter Search Results")
+    st.sidebar.write("**Select Role/Keyword**")
     roles = st.sidebar.multiselect(
         "Select Role/Keyword",
-        options=criteria['roles'],
+        options=criteria["roles"],
         default="Data Analyst",
-        help="Multiple Roles can be selected"
+        help="Multiple Roles can be selected",
+        label_visibility="collapsed",
     )
 
+    st.sidebar.write("**Add keywords related to the role above (Optional)**")
     text = st.sidebar.text_input(
-        "Add keywords related to the role above (Optional)", help="Keywords should be separated by commas"
+        "Add keywords related to the role above (Optional)",
+        help="Keywords should be separated by commas",
+        label_visibility="collapsed",
     )
-    
-    st.sidebar.markdown("-----")
 
     roles.extend(text.split(","))
     roles = [x.strip() for x in roles]
 
+    st.sidebar.write("**Search Location**")
     locations = st.sidebar.multiselect(
         "Search Location",
         options=["remote global", "remote worldwide", "hire from anywhere"],
         default="remote global",
-        help="Multiple locations can be selected"
-        
+        help="Multiple locations can be selected",
+        label_visibility="collapsed"
     )
-    
+
+    st.sidebar.write("**Exclude Location**")
     exclude_locations = st.sidebar.multiselect(
         "Exclude Location",
-        options=criteria['exclude_locations'],
+        options=criteria["exclude_locations"],
         default=None,
-        help="Multiple locations can be selected"
-        
+        help="Multiple locations can be selected",
+        label_visibility="collapsed"
     )
-    
-    
-    st.sidebar.markdown("-----")
 
-    date = st.sidebar.date_input("Select Start Date")
-    
-    st.sidebar.markdown("-----")
+    st.sidebar.write("**Select Start Date**")
+    date = st.sidebar.date_input("Select Start Date", label_visibility="collapsed")
+
 
     search, generate = st.sidebar.columns([1, 1])
-        
+
     prev, next = st.sidebar.columns([1, 1])
-    
-    st.sidebar.markdown("-----")
 
     if search.button("Start Search", type="primary"):
         try:
@@ -132,7 +134,7 @@ def view_jobboard():
 
     with st.spinner("Loading Jobs..."):
         display_res = items[startIndex:endIndex]
-        
+
         if len(display_res) > 0:
             for index, result in enumerate(display_res, start=startIndex):
                 link_address = result["link"]
@@ -144,8 +146,9 @@ def view_jobboard():
                 except KeyError:
                     title = result["title"]
 
-                st.write(f"#### {index+1}. {title}")
-                with st.expander("View Job Post"):
+                col1, col2 = st.columns([1, 20])
+                col1.write(f"#### {index+1}.")
+                with col2.expander(f"**{title}**"):
                     st.markdown(
                         f"""
                                 {snippet} \n
@@ -154,12 +157,9 @@ def view_jobboard():
                         unsafe_allow_html=True,
                     )
         else:
-            st.info(
-                "No More Job Post. Click 'Get More Job Posts' or 'Include More Keywords'"
-            )
-    
-    st.sidebar.info("Reduce Search Frequency")
-    
+            st.info("Click 'Get More Job Posts' or 'Include More Keywords'")
+
+    info_holder.info("Reduce Search Frequency")
 
     # Made by section - footer in the sidebar
     st.sidebar.markdown(
