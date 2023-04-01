@@ -1,42 +1,41 @@
 import streamlit as st
-from st_pages import Page, show_pages
+from st_pages import Page, show_pages, add_page_title
+from streamlit_extras.switch_page_button import switch_page
 
+
+st.set_page_config(
+    page_title="JobBoards",
+    page_icon="clipboard",
+    initial_sidebar_state="expanded",
+    layout="wide",
+)
 
 show_pages(
     [
         Page("app.py", "Home", "🏠"),
-        Page("other_pages/global_companies.py", "Global Companies", "📖"),
+        Page("other_pages/global_companies.py", "Global Companies", "🏢"),
         Page("other_pages/custom_search.py", "Custom Job Search", "🔎"),
     ]
 )
 
+# Header section with app name and emoji
+st.title("🔍 Job Search App")
 
-# About the JobBoard Project
-with st.expander("About this App"):
-    st.markdown(
-        """
-                This App Is for Searching for Open Roles on Various Job Boards Across the Internet.
-                This Filter Search section allows for tailored job postings based on your search criteria.
-                """
-    )
+# Explanation section with emojis
+st.write("Find your dream job faster with this job search app! 🚀")
+st.write("🌟The app features a job catalogue and custom Google search 🔎 to help you find relevant job posts quickly. 💪")
+st.write("🌟Customize your search by location and industry get personalized job recommendations. 🎯")
+st.write("Save time and effort by accessing a wide range of job posts from top companies in real-time. ⏰")
 
-# How to use the app
-with st.expander("How to use the app"):
-    st.markdown(
-        """
-    JobBoard Page
-    - Under the Sidebar, Select Any of the Roles Under the Filter Search Results
-    - Add Keywords if Necessary e.g. 'Python, Health, Supply Chain etc.'
-    - Include the Location for the Role i.e 'global, remote global, hire from anywhere'
-    - Select the Start Date of the Search.
-    - You can also exclude certain locations from the search by using the Exclude Location Section
-    - Once you are comfortable with the options, Click on the Start Search Button.
-    - Each search result shows only 10 entries per page, to get more search result Click on the "Get More Job Posts" button
-    - The Next Page and Previous Page Allows for Navigation between the Pages.
-    
-    
-    """
-    )
+# Search button to redirect to search results page
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+if st.button("Get Started", type="primary", use_container_width=True):
+        switch_page("Global Companies")
+
+
 
 # Made by section - footer in the sidebar
 st.sidebar.markdown(
