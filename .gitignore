@@ -1,9 +1,10 @@
-.streamlit/
+.streamlit/secrets.toml
 api.json
 job_board_cred.json
 .vscode/
 __pycache__
-/scrape_env
+/py_env
 .env
 test.ipynb
 hash_password.py
+remote_jobs.xlsx
