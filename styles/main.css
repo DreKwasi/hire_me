@@ -1,0 +1,7 @@
+div.block-container {
+  padding-top: 2.2rem;
+}
+
+div[data-testid="stExpander"] div[role="button"] p {
+  font-size: 1rem;
+}
