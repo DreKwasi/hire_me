@@ -1,7 +1,9 @@
-google-api-python-client
 streamlit
-beautifulsoup4
-streamlit_authenticator
-streamlit_option_menu
 deta
+streamlit-authenticator
+streamlit-option-menu
+pandas
+google-api-python-client
 streamlit-extras
+st-pages
+openpyxl
