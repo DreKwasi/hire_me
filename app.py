@@ -1,7 +1,7 @@
 import streamlit as st
 from st_pages import Page, show_pages, add_page_title
 from streamlit_extras.switch_page_button import switch_page
-
+from helper import footer
 
 st.set_page_config(
     page_title="JobBoards",
@@ -39,12 +39,4 @@ if st.button("Get Started", type="primary", use_container_width=True):
 
 
 # Made by section - footer in the sidebar
-st.sidebar.markdown(
-    """
-### Made with ❤️ by:
-- [Andrews Asamoah Boateng](https://www.linkedin.com/in/aaboateng/)
-- [Joel Kojo Abaka Anaman](https://www.linkedin.com/in/joelanaman/)
-
-
-"""
-)
+footer.credit()

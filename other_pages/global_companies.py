@@ -1,5 +1,5 @@
 import streamlit as st
-from helper import styles, data_parser
+from helper import styles, data_parser, footer
 import streamlit.components.v1 as components
 import pandas as pd
 from streamlit_option_menu import option_menu
@@ -17,9 +17,10 @@ st.set_page_config(
 
 styles.load_css_file("styles/main.css")
 st.header("🏢 Global Companies")
+st.write("")
 
 
-col1, col2 = st.sidebar.columns([1, 1])
+col1, col2 = st.sidebar.columns([2, 1])
 with col1:
     if st.button("Custom Google Search", type="primary"):
         switch_page("Custom Google Search")
@@ -30,7 +31,6 @@ with col2:
     if st.button("Home", type="primary"):
         switch_page("Home")
 
-st.write("")
 
 selected = option_menu(
     "",
@@ -261,3 +261,7 @@ elif selected == "1000+ Companies":
                     st.markdown(f"[Visit {options[2]}]({link})")
                 else:
                     st.write("No link available for LinkedIn Jobs.")
+
+
+
+footer.credit()

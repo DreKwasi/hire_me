@@ -1,5 +1,5 @@
 import streamlit as st
-from helper import db, job_board_func, styles
+from helper import db, job_board_func, styles, footer
 import streamlit_authenticator as st_auth
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_option_menu import option_menu
@@ -72,4 +72,6 @@ elif selected == "Home Page":
     with col2:
         authenticator.logout("Logout")
     job_board_func.view_jobboard()
-    
+
+footer.credit()
+

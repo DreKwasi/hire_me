@@ -160,14 +160,3 @@ def view_jobboard():
             st.info("Click 'Get More Job Posts' or 'Include More Keywords'")
 
     info_holder.info("Reduce Search Frequency")
-
-    # Made by section - footer in the sidebar
-    st.sidebar.markdown(
-        """
-    ### Made with ❤️ by:
-    - [Andrews Asamoah Boateng](https://www.linkedin.com/in/aaboateng/)
-    - [Joel Kojo Abaka Anaman](https://www.linkedin.com/in/joelanaman/)
-    
-
-    """
-    )
