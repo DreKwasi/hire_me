@@ -1,0 +1,9 @@
+[theme]
+base="light"
+primaryColor="#029e16"
+
+
+[server]
+showWarningOnDirectExecution = false
+runOnSave = true
+
