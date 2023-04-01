@@ -3,6 +3,10 @@ from helper import styles, data_parser
 import streamlit.components.v1 as components
 import pandas as pd
 from streamlit_option_menu import option_menu
+import itertools
+from streamlit_extras.no_default_selectbox import selectbox
+from streamlit_extras.switch_page_button import switch_page
+import numpy as np
 
 st.set_page_config(
     page_title="JobBoards",
@@ -12,10 +16,21 @@ st.set_page_config(
 )
 
 styles.load_css_file("styles/main.css")
+st.header("🏢 Global Companies")
 
-st.session_state.page_number = (
-    0 if "page_number" not in st.session_state else st.session_state.page_number
-)
+
+col1, col2 = st.sidebar.columns([1, 1])
+with col1:
+    if st.button("Custom Job Search", type="primary"):
+        switch_page("Custom Job Search")
+
+with col2:
+    # st.markdown("###")
+
+    if st.button("Home", type="primary"):
+        switch_page("Home")
+
+st.write("")
 
 selected = option_menu(
     "",
@@ -36,9 +51,13 @@ selected = option_menu(
 )
 
 if selected == "Hand-Picked Global Companies":
+    st.session_state.page_number_one = (
+        0
+        if "page_number_one" not in st.session_state
+        else st.session_state.page_number_one
+    )
     df = data_parser.read_data(selected)
 
-    st.subheader("Global Companies")
     st.sidebar.subheader("**Filters**")
 
     st.sidebar.write("Select Number of Jobs to Display Per Page")
@@ -59,13 +78,17 @@ if selected == "Hand-Picked Global Companies":
         df = df[df["Company"].isin(sel_comp)]
 
     industry = df["Industry"].unique()
+    ind_list = list(itertools.chain.from_iterable([x.split(",") for x in industry]))
+    ind_list = np.unique(ind_list)
+    
     st.sidebar.write("**Select Industry**")
     sel_ind = st.sidebar.multiselect(
-        "Select Industry", options=industry, label_visibility="collapsed"
+        "Select Industry", options=ind_list, label_visibility="collapsed"
     )
 
-    if len(sel_ind) > 0:
-        df = df[df["Industry"].isin(sel_ind)]
+    if sel_ind:
+        matx = [df[df["Industry"].str.contains(i.strip())] for i in sel_ind]
+        df = pd.concat(matx)
 
     df = df.reset_index()
 
@@ -73,28 +96,28 @@ if selected == "Hand-Picked Global Companies":
 
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     if col1.button("Previous Page ⬅️"):
-        if st.session_state.page_number - 1 < 0:
-            st.session_state.page_number = last_page
+        if st.session_state.page_number_one - 1 < 0:
+            st.session_state.page_number_one = last_page
         else:
-            st.session_state.page_number -= 1
+            st.session_state.page_number_one -= 1
     if col2.button("Next Page ➡️"):
-        if st.session_state.page_number + 1 > last_page:
-            st.session_state.page_number = 0
+        if st.session_state.page_number_one + 1 > last_page:
+            st.session_state.page_number_one = 0
         else:
-            st.session_state.page_number += 1
+            st.session_state.page_number_one += 1
 
-    if col3.button("First Page"):
-        st.session_state.page_number = 0
+    if col3.button("First Page 🔝"):
+        st.session_state.page_number_one = 0
 
-    if col4.button("Last Page"):
-        st.session_state.page_number = last_page
-        
-    st.caption(f"Page {st.session_state.page_number + 1} Out of {last_page}")
-    
-    start_index = st.session_state.page_number * num
+    if col4.button("Last Page 🔙"):
+        st.session_state.page_number_one = last_page
+
+    st.caption(f"Page {st.session_state.page_number_one + 1} Out of {last_page}")
+
+    start_index = st.session_state.page_number_one * num
     end_index = (
-        (1 + st.session_state.page_number) * num
-        if st.session_state.page_number != 0
+        (1 + st.session_state.page_number_one) * num
+        if st.session_state.page_number_one != 0
         else num
     )
 
@@ -116,6 +139,9 @@ if selected == "Hand-Picked Global Companies":
 
 
 elif selected == "1000+ Companies":
+    st.session_state.page_number = (
+        0 if "page_number" not in st.session_state else st.session_state.page_number
+    )
     df = data_parser.read_data(selected)
     df = pd.read_csv("assets/remote_jobs.csv")
     df.fillna("Not Specified", inplace=True)
@@ -123,9 +149,8 @@ elif selected == "1000+ Companies":
     st.sidebar.info(
         "Please Do Your Own Due Diligence Before Applying for Any of These Jobs"
     )
-    st.subheader("Global Companies")
-    st.sidebar.subheader("**Filters**")
 
+    st.sidebar.subheader("**Filters**")
     st.sidebar.write("Select Number of Jobs to Display Per Page")
     num = st.sidebar.slider(
         "Number of Jobs Per Page",
@@ -144,13 +169,16 @@ elif selected == "1000+ Companies":
         df = df[df["Company"].isin(sel_comp)]
 
     locations = df["Location/Eligibility"].unique()
+    locations = list(itertools.chain.from_iterable([x.split(",") for x in locations]))
+    locations = np.unique(locations)
+
     st.sidebar.write("**Select Location**")
     sel_loc = st.sidebar.multiselect(
         "Select Location", options=locations, label_visibility="collapsed"
     )
-
-    if len(sel_loc) > 0:
-        df = df[df["Location/Eligibility"].isin(sel_loc)]
+    if sel_loc:
+        matx = [df[df["Location/Eligibility"].str.contains(i.strip())] for i in sel_loc]
+        df = pd.concat(matx)
 
     last_page = df.shape[0] // num
 
@@ -168,10 +196,10 @@ elif selected == "1000+ Companies":
         else:
             st.session_state.page_number += 1
 
-    if col3.button("First Page"):
+    if col3.button("First Page 🔝"):
         st.session_state.page_number = 0
 
-    if col4.button("Last Page"):
+    if col4.button("Last Page 🔙"):
         st.session_state.page_number = last_page
 
     st.caption(f"Page {st.session_state.page_number + 1} Out of {last_page}")
